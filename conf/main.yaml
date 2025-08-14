@@ -1,0 +1,23 @@
+hydra:
+  run:
+    dir: outputs/single/${hydra.job.name}/${data.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+  sweep:
+    dir: outputs/multirun/${hydra.job.name}/${data.name}/${now:%Y-%m-%d}/${now:%H-%M-%S}
+    subdir: ${seed}
+
+defaults:
+  - _self_
+  - data: base
+  - model: xgboost
+  - exp: optuna
+
+n_splits: 10
+metrics: F1
+
+seed: 42
+gpuid: 0
+save_model: false
+save_predict: false
+existing_models: false
+thresholds: [0.3]
+# thresholds: [0.5, 1.5, 2.5, 3.5]

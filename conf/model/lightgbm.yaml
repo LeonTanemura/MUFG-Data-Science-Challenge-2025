@@ -1,0 +1,4 @@
+defaults:
+  - params: lightgbm
+
+name: lightgbm

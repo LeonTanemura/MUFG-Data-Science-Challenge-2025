@@ -1,0 +1,4 @@
+learning_rate: 0.05
+depth: 7
+n_estimators: 2000
+l2_leaf_reg: 4 #4

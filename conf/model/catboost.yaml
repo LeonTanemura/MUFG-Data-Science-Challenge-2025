@@ -1,0 +1,4 @@
+defaults:
+  - params: catboost
+
+name: catboost
