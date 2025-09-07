@@ -1,15 +1,11 @@
 learning_rate: 0.01
-max_depth: 5
-colsample_bytree: 0.65
-colsample_bylevel: 0.65
+max_depth: 4
+colsample_bytree: 0.8
+colsample_bylevel: 0.8
 reg_alpha: 0.0007
-n_estimators: 2000
-min_child_weight: 1.0
-gamma: 0.0
+n_estimators: 100000
+min_child_weight: 2.0
+gamma: 1.0
 reg_lambda: 1.0
-subsample: 1.0
-tree_method: hist          # メモリ少 & 速い
-grow_policy: lossguide     # 深くなり過ぎないよう制御
-max_bin: 256               # 勾配ヒストのビン数。小さいほどメモリ節約
-nthread: 1                 # トライアル並列時のスレッド暴発を抑止
-verbosity: 0               # ログ静音化
+subsample: 0.8
+verbosity: 0               

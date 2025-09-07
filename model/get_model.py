@@ -16,6 +16,7 @@ from .ensemble import (
 )
 
 
+# yamlファイルで指定された名前から使用するモデルの呼び出し
 def get_classifier(name, *, input_dim, output_dim, model_config, seed=42, verbose=0):
     set_seed(seed=seed)
     if name == "xgboost":
@@ -32,7 +33,7 @@ def get_classifier(name, *, input_dim, output_dim, model_config, seed=42, verbos
         raise KeyError(f"{name} is not defined.")
 
 
-# yamlファイルで指定された名前から使用するモデルの呼び出し
+# 未使用
 def get_regressor(name, *, input_dim, output_dim, model_config, seed=42, verbose=0):
     set_seed(seed=seed)
     if name == "xgboost":

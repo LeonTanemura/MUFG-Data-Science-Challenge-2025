@@ -53,14 +53,6 @@ def xgboost_config(trial: optuna.Trial, model_config, name: str = ""):
 
     if int(model_config.max_depth) >= 10:
         model_config.learning_rate = min(float(model_config.learning_rate), 0.1)
-
-    # 省メモリ固定（YAMLにあれば）
-    _set_if_exists(model_config, "tree_method", "hist")
-    _set_if_exists(model_config, "grow_policy", "lossguide")
-    _set_if_exists(model_config, "max_bin", 256)
-    _set_if_exists(model_config, "nthread", 1)
-    _set_if_exists(model_config, "early_stopping_rounds", 100)
-    _set_if_exists(model_config, "verbosity", 0)
     return model_config
 
 

@@ -116,7 +116,7 @@ class ExpBase:
             n_splits=self.n_splits, shuffle=True, random_state=self.seed
         )
         score_all = []
-        # 作成済みモデルの使用（特殊なアンサンブルも実行）
+        # 作成済みモデルの使用（特殊なアンサンブルも実行）今回は未使用
         if self.existing_models:
             model_filename = "/home/leon/study/mydir/MUFG-Champion-Ship/outputs/single/main/V2/2024-08-31/15-52-41/lightgbm.pkl"
             with open(model_filename, "rb") as f:
@@ -161,7 +161,7 @@ class ExpBase:
             img = plot_confusion_matrix(model, x_val, y_val, i_fold)
             image_list.append(img)
 
-            # 作成済みモデルの各評価指標の値を算出
+            # 作成済みモデルの各評価指標の値を算出　今回は未使用
             if self.existing_models:
                 ex_score = cal_metrics_regression(
                     ex_models1[i_fold], val_data, self.columns, self.target_column

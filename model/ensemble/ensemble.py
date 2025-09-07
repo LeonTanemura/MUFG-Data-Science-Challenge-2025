@@ -77,9 +77,8 @@ class XGBLGBMCATClassifier(BaseClassifier):
         self.cat_model.fit(X, y, eval_set)
 
     def predict(self, X):
-        # アンサンブルの割合
         x = 0.333
-        l = 0.333
+        l = 0.322
         c = 1 - x - l
         return (
             self.xgb_model.predict(X) * x
@@ -88,11 +87,14 @@ class XGBLGBMCATClassifier(BaseClassifier):
         )
 
     def predict_proba(self, X):
+        x = 0.333
+        l = 0.322
+        c = 1 - x - l
         return (
-            self.xgb_model.predict_proba(X)
-            + self.lgbm_model.predict_proba(X)
-            + self.cat_model.predict_proba(X)
-        ) / 3
+            self.xgb_model.predict_proba(X) * x
+            + self.lgbm_model.predict_proba(X) * l
+            + self.cat_model.predict_proba(X) * c
+        )
 
     def feature_importance(self):
         return (
@@ -102,6 +104,7 @@ class XGBLGBMCATClassifier(BaseClassifier):
         )
 
 
+# 未使用
 # xgboost, lightgbmのアンサンブル
 class XGBLGBMRegressor(BaseRegressor):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
@@ -137,6 +140,7 @@ class XGBLGBMRegressor(BaseRegressor):
         return self.xgb_model.feature_importance(), self.lgbm_model.feature_importance()
 
 
+# 未使用
 # xgboost, lightgbm, catboostのアンサンブル
 class XGBLGBMCATRegressor(BaseRegressor):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:

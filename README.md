@@ -1,91 +1,42 @@
-# リポジトリ名
-## 環境設定
-- python 3.10.6
+# MUFG Data Science Challenge 2025
 
-poetryで管理してるので，以下でパッケージをインストールする．
+## 概要
+MUFGデータサイエンスチャレンジ2025のソリューションコード
+
+## 環境設定
+### 必要条件
+- Python 3.10.12
+- 必要なライブラリ
+
 ```bash
-poetry install
+pip install -r requirements.txt
 ```
 
-## 実行
+## プロジェクト構造
+```
+├── conf/           # 設定ファイル
+├── dataset/        # データセット関連のコード
+├── datasets/       # 生データと処理済みデータ
+├── experiment/     # 実験用コード
+├── model/         # モデル定義
+└── outputs/       # 学習結果の出力
+```
+
+## データの準備
+1. `datasets`ディレクトリを作成
+2. 訓練データ(`train.csv`)とテストデータ(`test.csv`)を配置
+3. 前処理の実行:
+```bash
+python preprocess.py
+```
+
+## 学習の実行
 ```bash
 python main.py
 ```
 
-## 手順
-- リポジトリ作成からコミットまで
-```bash
-git clone URL
-```
-```bash
-git add .
-``` 
-```bash
-git commit -m "first commit"
-```
-
-- poetry作成
-```bash
-cd project_xyz
-```
-```bash
-poetry init
-```
-```bash
-poetry install
-```
-```bash
-poetry add <package-name>
-```
-```bash
-poetry add scikit-learn
-poetry add hydra-core
-poetry add optuna
-poetry add xgboost
-poetry add lightgbm
-```
-```bash
-poetry update
-```
-
-- git 使い方
-
-自分のブランチで作業する。
-ブランチの作成方法
-```bash
-git branch "branch-name"
-git switch "branch-name"
-```
-
-コミットまで
-```bash
-git add "filename"
-git commit -m "メッセージ"
-git push origin "branch-name"
-```
-
-このタイミングでプルリクを出す
-
-プルリクが通った後、
-pullやり方
-```bash
-git switch main
-git pull
-git switch "branch-name"
-git merge main
-```
-
-- DATA
-
-datasetsディレクトリを作成し、その中にサンプルデータを入れる。
-
-preprocess.pyを使用し、データ処理
-
-
-
-- DATA
-
-datasetsディレクトリを作成し、その中にサンプルデータを入れる。
-
-preprocess.pyを使用し、データ処理
-
+## 主な機能
+- カテゴリカル変数のエンコーディング
+- テキストデータの特徴量エンジニアリング
+- 複数のモデル（LightGBM, XGBoost, CatBoost）による学習
+- Optunaによるハイパーパラメータ最適化

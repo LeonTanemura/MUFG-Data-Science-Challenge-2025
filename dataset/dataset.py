@@ -218,8 +218,8 @@ class V0(TabularDataFrame):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(**kwargs)
-        self.train = pd.read_csv(to_absolute_path("datasets/train_fixed3.csv"))
-        self.test = pd.read_csv(to_absolute_path("datasets/test_fixed3.csv"))
+        self.train = pd.read_csv(to_absolute_path("datasets/train_fixed7.csv"))
+        self.test = pd.read_csv(to_absolute_path("datasets/test_fixed7.csv"))
         not_selected_columns = [
             "id",
             "name",
@@ -235,7 +235,24 @@ class V0(TabularDataFrame):
             "launched_at",
             "final_status",
             "launch_date",
+            # "prob_desc",
+            # "prob_desc2",
+            "prob_desc3",
+            # "prob_desc4",
+            "prob_desc5",
+            # "goal_bin",
+            # "log_goal",
+            # "goal_percentile",
+            # "goal_rel_to_country",
         ]
         self.continuous_columns = [
             c for c in self.train.columns if c not in not_selected_columns
         ]
+        self.categorical_columns = [
+            "country",
+            "currency",
+            # "goal_bin",
+        ]
+
+
+# goal_usd_on_launch  log_goal goal_bin  goal_percentile  goal_rel_to_country

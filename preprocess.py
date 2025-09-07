@@ -5,45 +5,6 @@ import re
 from tabulate import tabulate
 
 
-# train2 = pd.read_csv("datasets/train_stacking_deberta_review_v2.csv")
-# test2 = pd.read_csv("datasets/test_stacking_deberta_review_v2.csv")
-# train3 = pd.read_csv("datasets/train_stacking_deberta_replyContent_v2.csv")
-# test3 = pd.read_csv("datasets/test_stacking_deberta_replyContent_v2.csv")
-# train4 = pd.read_csv("datasets/train_stacking_bert_review_v2.csv")
-# test4 = pd.read_csv("datasets/test_stacking_bert_review_v2.csv")
-# train5 = pd.read_csv("datasets/train_stacking_bert_replyContent_v2.csv")
-# test5 = pd.read_csv("datasets/test_stacking_bert_replyContent_v2.csv")
-# train6 = pd.read_csv("datasets/train_stacking_roberta_review_v2.csv")
-# test6 = pd.read_csv("datasets/test_stacking_roberta_review_v2.csv")
-# train7 = pd.read_csv("datasets/train_stacking_roberta_replyContent_v2.csv")
-# test7 = pd.read_csv("datasets/test_stacking_roberta_replyContent_v2.csv")
-
-# train['deberta_review_pred'] = train2['deberta_review_pred']
-# test['deberta_review_pred'] = test2['deberta_review_pred']
-# train['deberta_replyContent_pred'] = train3['deberta_replyContent_pred']
-# test['deberta_replyContent_pred'] = test3['deberta_replyContent_pred']
-
-# train['bert_review_pred'] = train4['bert_review_pred']
-# test['bert_review_pred'] = test4['bert_review_pred']
-# train['bert_replyContent_pred'] = train5['bert_replyContent_pred']
-# test['bert_replyContent_pred'] = test5['bert_replyContent_pred']
-
-# train['roberta_review_pred'] = train6['roberta_review_pred']
-# test['roberta_review_pred'] = test6['roberta_review_pred']
-# train['roberta_replyContent_pred'] = train7['roberta_replyContent_pred']
-# test['roberta_replyContent_pred'] = test7['roberta_replyContent_pred']
-
-# train8 = pd.read_csv("datasets/new_train_tfid_features.csv")
-# test8 = pd.read_csv("datasets/new_test_tfid_features.csv")
-# train9 = pd.read_csv("datasets/new_train_cntvec_features.csv")
-# test9 = pd.read_csv("datasets/new_test_cntvec_features.csv")
-
-# train = pd.concat([train, train8], axis=1)
-# train = pd.concat([train, train9], axis=1)
-# test = pd.concat([test, test8], axis=1)
-# test = pd.concat([test, test9], axis=1)
-
-
 # 欠損値の確認
 def missing_value_checker(df, name):
     """データフレームの欠損値を確認して表示する"""
@@ -64,6 +25,7 @@ def missing_value_checker(df, name):
         )
 
 
+# ユニーク数が少ない列の値分布を表示する。
 def value_distribution_checker(df, max_unique=30):
     for col in df.columns:
         print(f"\n【特徴量名】{col}")
@@ -100,6 +62,7 @@ def check_dataset(train, test, train_test):
     value_distribution_checker(train_test)
 
 
+# 指定列の欠損値を平均・中央値・最頻値で補完する。
 def simple_complementation(df, targets, method="mean"):
     for target in targets:
         if df[target].dtype == "object":
@@ -206,6 +169,7 @@ def add_time_features(df, use_state_changed=False):
     return df
 
 
+# OOF/test の確率ファイルを id で結合して特徴量を追加する。
 def add_prob_feature_by_id(
     df_all: pd.DataFrame,
     oof_csv: str,
@@ -266,22 +230,33 @@ def preprocess(df):
     return df
 
 
+# train/test に分割して CSV を保存する。
 def create_csv(df):
     missing_value_checker(df, "train_test")
     train = df[df["id"].str.startswith("train_")]
     test = df[df["id"].str.startswith("test_")]
     test = test.drop("final_status", axis=1)
-    train.to_csv("datasets/train_fixed.csv", index=False)
-    test.to_csv("datasets/test_fixed.csv", index=False)
+    train.to_csv("datasets/train_fixed7.csv", index=False)
+    test.to_csv("datasets/test_fixed7.csv", index=False)
 
 
+# 前処理・特徴追加を実行し、train/test を保存する。
 def main():
     OOF_NAME = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_deberta_v3_large_name.csv"
     TEST_NAME = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_pred_deberta_v3_large_name.csv"
     OOF_DESC = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_deberta_v3_base_desc.csv"
     TEST_DESC = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_pred_deberta_v3_base_desc.csv"
-    train = pd.read_csv("datasets/new_train.csv")
-    test = pd.read_csv("datasets/new_test.csv")
+    OOF_DESC2 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_sentence_transformers_all_mpnet_base_v2_desc.csv"
+    TEST_DESC2 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_sentence_transformers_all_mpnet_base_v2_desc.csv"
+    # OOF_DESC3 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_thenlper_gte_small_desc.csv"
+    # TEST_DESC3 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_thenlper_gte_small_desc.csv"
+    OOF_DESC4 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_intfloat_e5_small_v2_desc.csv"
+    TEST_DESC4 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_intfloat_e5_small_v2_desc.csv"
+    # OOF_DESC5 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/oof_sentence_transformers_all_MiniLM_L6_v2_desc.csv"
+    # TEST_DESC5 = "/home/leon/study/mydir/MUFG-Data-Science-Challenge-2025/datasets/test_sentence_transformers_all_MiniLM_L6_v2_desc.csv"
+
+    train = pd.read_csv("datasets/train_fixed6.csv")
+    test = pd.read_csv("datasets/test_fixed6.csv")
     train_test = pd.concat([train, test])
     check_dataset(train, test, train_test)
     train_test = preprocess(train_test)
@@ -300,6 +275,24 @@ def main():
         test_csv=TEST_DESC,
         id_col="id",
         out_col="prob_desc",  # 追加したい列名
+        oof_col="oof_prob_desc",  # OOF 側の列名
+        test_col="prob_desc",  # test 側の列名
+    )
+    train_test = add_prob_feature_by_id(
+        train_test,
+        oof_csv=OOF_DESC2,
+        test_csv=TEST_DESC2,
+        id_col="id",
+        out_col="prob_desc2",  # 追加したい列名
+        oof_col="oof_prob_desc",  # OOF 側の列名
+        test_col="prob_desc",  # test 側の列名
+    )
+    train_test = add_prob_feature_by_id(
+        train_test,
+        oof_csv=OOF_DESC4,
+        test_csv=TEST_DESC4,
+        id_col="id",
+        out_col="prob_desc4",  # 追加したい列名
         oof_col="oof_prob_desc",  # OOF 側の列名
         test_col="prob_desc",  # test 側の列名
     )

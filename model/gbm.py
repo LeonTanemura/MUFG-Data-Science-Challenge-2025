@@ -17,7 +17,6 @@ from .utils import (
 )
 
 
-# 未使用
 class XGBoostClassifier(BaseClassifier):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
         super().__init__(input_dim, output_dim, model_config, verbose)
@@ -25,7 +24,7 @@ class XGBoostClassifier(BaseClassifier):
             objective="binary:logistic",  # 2値分類用のobjectiveに変更
             # num_class=self.output_dim,
             eval_metric=["logloss", "auc"],
-            early_stopping_rounds=100,
+            early_stopping_rounds=50,
             **self.model_config,
         )
 
@@ -40,7 +39,6 @@ class XGBoostClassifier(BaseClassifier):
         return self.model.feature_importances_
 
 
-# 未使用
 class LightGBMClassifier(BaseClassifier):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
         super().__init__(input_dim, output_dim, model_config, verbose)
@@ -63,7 +61,7 @@ class LightGBMClassifier(BaseClassifier):
             eval_set=[eval_set],
             eval_metric=["binary_logloss", "auc"],
             callbacks=[
-                lgb.early_stopping(stopping_rounds=100, verbose=self.verbose > 0),
+                lgb.early_stopping(stopping_rounds=50, verbose=self.verbose > 0),
                 lgb.log_evaluation(period=100),
             ],
         )
@@ -95,7 +93,7 @@ class CatBoostClassifier(BaseClassifier):
             X,
             y,
             eval_set=[(X_val, y_val)],
-            early_stopping_rounds=100,
+            early_stopping_rounds=50,
             use_best_model=True,
             verbose=self.verbose > 0,
         )
@@ -104,6 +102,7 @@ class CatBoostClassifier(BaseClassifier):
         return self.model.get_feature_importance()
 
 
+# 未使用
 class XGBoostRegressor(BaseRegressor):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
         super().__init__(input_dim, output_dim, model_config, verbose)
@@ -143,6 +142,7 @@ class XGBoostRegressor(BaseRegressor):
         return self.model.feature_importances_
 
 
+# 未使用
 class LightGBMRegressor(BaseRegressor):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
         super().__init__(input_dim, output_dim, model_config, verbose)
@@ -177,6 +177,7 @@ class LightGBMRegressor(BaseRegressor):
         return self.model.feature_importances_
 
 
+# 未使用
 class CatBoostRegressor(BaseRegressor):
     def __init__(self, input_dim, output_dim, model_config, verbose, seed=None) -> None:
         super().__init__(input_dim, output_dim, model_config, verbose)

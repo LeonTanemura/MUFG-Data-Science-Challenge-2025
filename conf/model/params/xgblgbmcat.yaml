@@ -1,46 +1,73 @@
+# xgboost:
+#   booster: gbtree
+#   tree_method: hist
+#   max_bin: 256
+#   learning_rate: 0.03        # 0.01運用なら n_estimators をもっと増やす
+#   n_estimators: 5000         # 早停前提
+#   max_depth: 5
+#   min_child_weight: 5
+#   gamma: 0.0
+#   subsample: 0.8
+#   colsample_bytree: 0.6
+#   colsample_bylevel: 0.8
+#   reg_alpha: 0.0
+#   reg_lambda: 1.0
+#   scale_pos_weight: 2.125
+#   # eval_metric: logloss
+
+# lightgbm:
+#   # objective: binary
+#   # metric: binary_logloss         # F1は閾値最適化で後処理
+#   learning_rate: 0.03
+#   n_estimators: 5000             # 早停前提
+#   max_depth: -1
+#   num_leaves: 63                 # 今の 10 は小さすぎて表現力不足
+#   min_data_in_leaf: 60
+#   feature_fraction: 0.65
+#   bagging_fraction: 0.8
+#   bagging_freq: 1
+#   lambda_l1: 0.0
+#   lambda_l2: 1.0
+#   max_bin: 127                   # メモリ削減
+#   scale_pos_weight: 2.125
+#   num_threads: 4
+#   verbosity: -1
+
+# catboost:
+#   # loss_function: Logloss
+#   # eval_metric: F1                # ログの監視用。最終閾値は後述で最適化
+#   learning_rate: 0.03
+#   iterations: 5000               # 早停前提
+#   depth: 6
+#   l2_leaf_reg: 6
+#   border_count: 128
+#   subsample: 0.8                 # RandomStrengthとセットで正則化
+#   random_strength: 1.0
+#   # class_weights: [1.0, 2.125]
+
 xgboost:
-  booster: gbtree
-  tree_method: hist
-  max_bin: 256
-  learning_rate: 0.03        # 0.01運用なら n_estimators をもっと増やす
-  n_estimators: 5000         # 早停前提
-  max_depth: 5
-  min_child_weight: 5
-  gamma: 0.0
-  subsample: 0.8
-  colsample_bytree: 0.6
+  learning_rate: 0.01
+  max_depth: 4
+  colsample_bytree: 0.8
   colsample_bylevel: 0.8
-  reg_alpha: 0.0
+  reg_alpha: 0.0007
+  n_estimators: 100000
+  min_child_weight: 2.0
+  gamma: 1.0
   reg_lambda: 1.0
-  scale_pos_weight: 2.125
-  # eval_metric: logloss
+  subsample: 0.8
+
 
 lightgbm:
-  # objective: binary
-  # metric: binary_logloss         # F1は閾値最適化で後処理
-  learning_rate: 0.03
-  n_estimators: 5000             # 早停前提
-  max_depth: -1
-  num_leaves: 63                 # 今の 10 は小さすぎて表現力不足
-  min_data_in_leaf: 60
-  feature_fraction: 0.65
-  bagging_fraction: 0.8
-  bagging_freq: 1
-  lambda_l1: 0.0
-  lambda_l2: 1.0
-  max_bin: 127                   # メモリ削減
-  scale_pos_weight: 2.125
-  num_threads: 4
-  verbosity: -1
+  learning_rate: 0.01
+  max_depth: 6
+  num_leaves: 31
+  reg_alpha: 0.001
+  reg_lambda: 0.0001
+  n_estimators: 10000
 
 catboost:
-  # loss_function: Logloss
-  # eval_metric: F1                # ログの監視用。最終閾値は後述で最適化
-  learning_rate: 0.03
-  iterations: 5000               # 早停前提
+  # learning_rate: 0.05
   depth: 6
-  l2_leaf_reg: 6
-  border_count: 128
-  subsample: 0.8                 # RandomStrengthとセットで正則化
-  random_strength: 1.0
-  # class_weights: [1.0, 2.125]
+  n_estimators: 10000
+  l2_leaf_reg: 4
